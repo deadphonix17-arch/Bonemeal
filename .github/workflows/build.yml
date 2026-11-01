@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # Uses the wrapper if you add one, otherwise installs Gradle 8.8 directly.
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.8
+
+      - name: Build
+        run: |
+          if [ -f ./gradlew ]; then
+            chmod +x ./gradlew
+            ./gradlew build
+          else
+            gradle build
+          fi
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: bone-meal-sugar-cane
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+
+      - name: Create release (on v* tags)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar

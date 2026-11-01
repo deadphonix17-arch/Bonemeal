@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "bone_meal_sugar_cane",
+  "version": "${version}",
+  "name": "Bone Meal Sugar Cane",
+  "description": "You can now use bone meal on sugar cane to grow it instantly.",
+  "authors": ["sydist"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/bone_meal_sugar_cane/icon.jpg",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["bone_meal_sugar_cane.BoneMealSugarCane"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
